@@ -2,7 +2,7 @@ import os
 from huggingface_hub import InferenceApi
 
 # Load Hugging Face token from GitHub secret
-token = os.getenv("HUGGINGFACE_TOKEN")
+token = os.getenv("HF_TOKEN")
 
 # Check if token is missing
 if not token:

@@ -17,4 +17,4 @@ def generate_blog(keywords):
     prompt = f"Write a blog post about the following real estate topics in Dubai:\n\n{', '.join(keywords)}"
     result = api(inputs=prompt)
 
-    return result.get('generated_text', '🤷 No blog generated.')
+    return result.get('generated_text', '🤷 No blog generated.') 

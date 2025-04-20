@@ -2,7 +2,7 @@ from huggingface_hub import InferenceClient
 import os
 
 def generate_blog(keywords):
-    hf_token = os.environ.get("HUGGINGFACE_TOKEN")
+    hf_token = os.environ.get("HF_TOKEN")
     if not hf_token:
         raise ValueError("Hugging Face token is missing. Please check your GitHub Secrets.")
 

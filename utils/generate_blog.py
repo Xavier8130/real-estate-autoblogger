@@ -1,24 +1,16 @@
-def generate_blog(keywords):
-    # Assuming you use Hugging Face's Inference API to generate the blog
-    from huggingface_hub import InferenceApi
+import os
+from huggingface_hub import InferenceApi
 
-    # Use the correct model ID here
-    api = InferenceApi(repo_id="your-hugging-face-model-id", token="your-hugging-face-token")
+# Fetch the Hugging Face token from environment variables
+token = os.getenv('HUGGINGFACE_TOKEN')
 
-    try:
-        # Generate blog content
-        response = api(inputs=keywords)
-        
-        # Check the response format
-        if 'generated_text' in response:
-            blog_post = response['generated_text']
-        else:
-            print("Error: Response does not contain 'generated_text'. Here is the full response:")
-            print(response)
-            raise ValueError("No generated text returned.")
+# Ensure the token is valid before proceeding
+if not token:
+    raise ValueError("Hugging Face token is missing. Please check your .env file or GitHub Secrets.")
 
-    except Exception as e:
-        print(f"Error in blog generation: {e}")
-        blog_post = "There was an error generating the blog. Please try again."
+# Correct model ID
+model_id = "huggingface/gpt-3"  # Replace this with the correct model ID
 
-    return blog_post
+api = InferenceApi(repo_id=model_id, token=token)
+
+# Your code to generate the blog...

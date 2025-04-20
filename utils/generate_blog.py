@@ -7,7 +7,8 @@ def generate_blog(keywords):
     if not hf_token:
         raise ValueError("Hugging Face token is missing. Please check your GitHub Secrets.")
 
-    client = InferenceClient(model="tiiuae/falcon-rw-1b", token=hf_token)
+    client = InferenceClient(model="google/flan-t5-base", token=hf_token)
+
 
     prompt = f"""Write a 700-word SEO-friendly real estate blog using these trending keywords:
     {', '.join(keywords)}

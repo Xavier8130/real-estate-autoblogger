@@ -16,6 +16,9 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
+      - name: Decode credentials.json
+        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" | base64 -d > credentials.json
+
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:

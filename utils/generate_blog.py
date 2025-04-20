@@ -1,19 +1,27 @@
+from huggingface_hub import InferenceClient
 import os
-# Load Hugging Face token from GitHub secret
-token = os.getenv("HF_TOKEN")
-
-# Check if token is missing
-if not token:
-    raise ValueError("Hugging Face token is missing. Please check your .env file or GitHub Secrets.")
-from huggingface_hub import InferenceApi
-
-# Replace with actual model ID you're using (for example below)
-model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
-
-api = InferenceApi(repo_id=model_id, token=token)
 
 def generate_blog(keywords):
-    prompt = f"Write a blog post about the following real estate topics in Dubai:\n\n{', '.join(keywords)}"
-    result = api(inputs=prompt)
+    hf_token = os.environ.get("HUGGINGFACE_TOKEN")
+    if not hf_token:
+        raise ValueError("Hugging Face token is missing. Please check your GitHub Secrets.")
 
-    return result.get('generated_text', '🤷 No blog generated.') 
+    client = InferenceClient(
+        model="tiiuae/falcon-7b-instruct",  # or whatever model you're using
+        token=hf_token
+    )
+
+    prompt = f"""Write an engaging, SEO-optimized real estate blog article (700 words) for Gen Z investors in the UAE. Use the following trending keywords:
+    
+    {', '.join(keywords)}
+
+    Structure:
+    - Catchy title
+    - Short intro
+    - Main body with bullet points
+    - Call to action at the end
+    """
+
+    response = client.text_generation(prompt, max_new_tokens=700)
+
+    return response

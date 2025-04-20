@@ -1,23 +1,26 @@
 name: 🏡 Real Estate Autoblogger Daily Run
 
 on:
-  workflow_dispatch:  # allows manual run
+  workflow_dispatch:
   schedule:
-    - cron: '0 10 * * *'  # runs every day at 10 AM UTC
+    - cron: '0 10 * * *'
 
 jobs:
   run-autoblogger:
     runs-on: ubuntu-latest
-
     env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}  # 👈 Makes your Hugging Face token available to Python
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: Decode credentials.json
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" | base64 -d > credentials.json
+      - name: Create credentials.json
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+          # Verify it was created correctly
+          ls -la
+          head -n 2 credentials.json
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
@@ -25,8 +28,7 @@ jobs:
           python-version: 3.11
 
       - name: 📦 Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: 🚀 Run blog generator
         run: python main.py
